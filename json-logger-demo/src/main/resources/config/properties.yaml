@@ -1,0 +1,15 @@
+json:
+  logger:
+    application:
+      version: "1.0"
+      name: "json-logger-demo"
+      
+mule:
+  env: "Dev"
+  
+logging:
+  business.process: "Employee Creation"
+  destination.app: "SAP"
+  originating.app: "Hybris"
+  
+  

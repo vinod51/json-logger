@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Definition for fields used in the logger message processor",
+  "type": "object",
+  "properties": {
+    "priority": {
+      "type": "string",
+      "javaType": "org.mule.extension.jsonlogger.api.pojos.Priority",
+      "enum": [
+        "DEBUG",
+        "TRACE",
+        "INFO",
+        "WARN",
+        "ERROR"
+      ],
+      "sdk": {
+        "default": "INFO",
+        "summary": "Logger priority"
+      }
+    },
+    "tracePoint": {
+      "type": "string",
+      "javaType": "org.mule.extension.jsonlogger.api.pojos.TracePoint",
+      "enum": [
+        "START",
+        "BEFORE_TRANSFORM",
+        "AFTER_TRANSFORM",
+        "BEFORE_REQUEST",
+        "AFTER_REQUEST",
+        "FLOW",
+        "END",
+        "EXCEPTION"
+      ],
+      "sdk": {
+        "default": "START",
+        "summary": "Current processing stage"
+      }
+    },
+    "message": {
+      "type": "string",
+      "sdk": {
+        "example": "Add a log entry",
+        "required": true,
+        "summary": "Message to be logged"
+      }
+    },
+    "businessProcess": {
+      "type": "string",
+      "sdk": {
+        "example": "Order Entry",
+        "required": false,
+        "summary": "Business Process"
+      }
+    },
+    "category": {
+      "type": "string",
+      "sdk": {
+        "example": "Standard",
+        "required": false,
+        "summary": "Exception or Standard?"
+      }
+    },
+    "originatingApp": {
+      "type": "string",
+      "sdk": {
+        "example": "Hybris",
+        "required": false,
+        "summary": "Originating App"
+      }
+    },
+    "destinationApp": {
+      "type": "string",
+      "sdk": {
+        "example": "SAP",
+        "required": false,
+        "summary": "Destination App"
+      }
+    },
+    "content": {
+      "type": "string",
+      "javaType": "org.mule.runtime.extension.api.runtime.parameter.ParameterResolver<org.mule.runtime.api.metadata.TypedValue<Object>>",
+      "sdk": {
+        "default": "#[output application/json ---\n{\n \tpayload: payload,\n \tattributes: attributes\n}]",
+        "summary": "Remove if no content should be logged",
+        "isContent": true
+      }
+    },
+    "correlationId": {
+      "type": "string",
+      "sdk": {
+        "default": "#[correlationId]",
+        "placement": {
+          "tab": "Advanced"
+        }
+      }
+    }
+  }
+}

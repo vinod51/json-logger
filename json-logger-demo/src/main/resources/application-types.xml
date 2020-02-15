@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="input-type" format="json">
+      <types:shape format="weave" example="examples/input.json"><![CDATA[%dw 2.0
+
+type input_type = {|
+  employee_name: String, 
+  employee_id: String
+|} {"example": "{\\\"employee_name\\\":\\\"AK\\\",\\\"employee_id\\\":\\\"23456\\\"}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#e21a21df-367b-4200-ad8c-cdc162f75936">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="input-type"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

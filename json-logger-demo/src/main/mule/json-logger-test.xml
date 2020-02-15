@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3a5c867c-e977-4617-8c66-a7cd6c64f2b9">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="a438cb58-f5c2-4cde-ad23-5a11888da7d9"/>
+	<configuration-properties doc:name="Configuration properties" doc:id="eddf6ba5-c824-4973-95a1-10f89491936e" file="config/properties.yaml" />
+	<flow name="json-logger-testFlow" doc:id="173473d6-6c08-483c-b37d-ebdcab77f4af" >
+		<http:listener doc:name="Listener" doc:id="93b6f1da-1244-478e-9394-3c78c48df692" config-ref="HTTP_Listener_config" path="/hello"/>
+		<json-logger:logger doc:name="Logger" doc:id="e21a21df-367b-4200-ad8c-cdc162f75936" config-ref="JSON_Logger_Config" message="#[%dw 2.0
+output application/java
+---
+'Employee ID is ' ++ payload.employee_id]" businessProcess="${logging.business.process}" category="Standard" originatingApp="${logging.originating.app}" destinationApp="${logging.destination.app}"/>
+		<tracking:transaction doc:name="Set Transaction Id" doc:id="058311a3-0a68-4de6-ad8c-b50939db569a" id="#[payload.'employee_id']"/>
+		<json-logger:logger doc:name="Logger" doc:id="e21a21df-367b-4200-ad8c-cdc162f75937" config-ref="JSON_Logger_Config" message="#[%dw 2.0
+output application/java
+---
+'Employee created with ID: ' ++ payload.employee_id]" businessProcess="${logging.business.process}" category="Standard" originatingApp="${logging.originating.app}" destinationApp="${logging.destination.app}" tracePoint="END"/>
+			</flow>
+</mule>
